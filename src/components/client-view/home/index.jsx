@@ -105,7 +105,6 @@ export default function ClientHomeView({data}){
                 <Image
                 src={home}
                 alt="home image"
-                layout="responsive"
                 quality={100}
                 height={300}
                 width={300}

@@ -29,6 +29,7 @@ const menuItems = [
 function CreateMenus({ activeLink,getMenuItems, setActiveLink }) {
     return getMenuItems.map((item) => (
         <LinkScroll
+        key={item.id}
         activeClass="active"
         to={item.id}
         spy={true}
@@ -63,7 +64,6 @@ export default function Navbar(){
                 <Image
         src={logo}
         alt="Logo"
-        layout="responsive"
         quality={100}
         height={100}
         width={120}

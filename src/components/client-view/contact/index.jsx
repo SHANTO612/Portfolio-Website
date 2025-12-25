@@ -70,7 +70,7 @@ export default function ClientContactView() {
         <div className="flex flex-col justify-center items-center row-start-2 sm:row-start-1">
           <h1 className="leading-[70px] mb-4 text-3xl lg:text-4xl xl:text-5xl font-bold">
             {"Contact Me".split(" ").map((item, index) => (
-              <span
+              <span key={index}
                 className={`${index === 1 ? "text-green-main" : "text-[#000]"}`}
               >
                 {" "}
@@ -87,7 +87,7 @@ export default function ClientContactView() {
             <div className="flex flex-wrap -m-2">
               {controls.map((controlItem) =>
                 controlItem.name === "message" ? (
-                  <div className="p-2 w-full">
+                  <div key={controlItem.name} className="p-2 w-full">
                     <div className="relative">
                       <label className="text-sm text-[#000]">
                         {controlItem.lable}
@@ -108,7 +108,7 @@ export default function ClientContactView() {
                     </div>
                   </div>
                 ) : (
-                  <div className="p-2 w-full">
+                  <div key={controlItem.name} className="p-2 w-full">
                     <div className="relative">
                       <label className="text-sm text-[#000]">
                         {controlItem.lable}

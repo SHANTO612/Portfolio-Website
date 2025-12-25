@@ -19,7 +19,7 @@ export default function ClientProjectView({ data }) {
         <div className="flex flex-col justify-center items-center row-start-2 sm:row-start-1">
           <h1 className="leading-[70px] mb-4 text-3xl lg:text-4xl xl:text-5xl font-bold">
             {"My Projects".split(" ").map((item, index) => (
-              <span
+              <span key={index}
                 className={`${index === 1 ? "text-green-main" : "text-[#000]"}`}
               >
                 {" "}
@@ -67,8 +67,8 @@ export default function ClientProjectView({ data }) {
                           </p>
 
                           <div className="grid gap-2 mt-5 grid-cols-2 h-full max-h-[200px] w-full">
-                            {item?.technologies.split(",").map((techItem) => (
-                              <div className="w-full flex justify-start items-center">
+                            {item?.technologies.split(",").map((techItem, tIdx) => (
+                              <div key={techItem || tIdx} className="w-full flex justify-start items-center">
                                 <button className="whitespace-nowrap text-ellipsis overflow-hidden py-3 w-[120px] px-6 border-[2px] border-green-main bg-[#fff] text-[#000] font-semibold rounded-lg text-xs tracking-widest hover:shadow-green-main transition-all outline-none">
                                   {techItem}
                                 </button>

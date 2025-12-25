@@ -1,9 +1,9 @@
 'use client'
 export default function FormControls({controls,formData,setFormData}){
-    return controls.map(controlItem => <div className="mb-4" >
-        <level className='block text-gray-700 text-sm font-bold mb-2'>
+    return controls.map(controlItem => <div key={controlItem.name} className="mb-4" >
+        <label className='block text-gray-700 text-sm font-bold mb-2'>
             {controlItem.label}
-        </level>
+        </label>
         <input
         placeholder={controlItem.placeholder}
         type={controlItem.type}

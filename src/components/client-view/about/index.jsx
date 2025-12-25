@@ -84,7 +84,7 @@ export default function ClientAboutView({data}){
         <div className="flex flex-col justify-center items-center row-start-2 sm:row-start-1">
             <h1 className="leading-[70px] mb-4 text-3xl lg:text-4xl xl:text-5xl font-medium">
         {headingText.split(" ").map((item, index) => (
-            <span className={`${index === 5 ? "text-green-main" : "text-[#000]" }`}> {item}{" "} </span>
+            <span key={index} className={`${index === 5 ? "text-green-main" : "text-[#000]" }`}> {item}{" "} </span>
         ))}
             </h1>
         <p className="text-[#000] mt-4 mb-8 font-bold"> {data?.about_me} </p>
@@ -97,7 +97,6 @@ export default function ClientAboutView({data}){
                 <Image
                 src={about}
                 alt="about image"
-                layout="responsive"
                 quality={100}
                 height={414}
                 width={508} 
@@ -106,8 +105,8 @@ export default function ClientAboutView({data}){
             </AnimationWrapper>
         <AnimationWrapper className={"flex items-center w-full p-4"}>
             <motion.div variants={setVariants} className="grid gap-4 grid-cols-3 h-full max-h-[200px] w-full">
-        {data?.skills.split(",").map((skill) => (
-            <motion.div className="w-full flex justify-center items-center" variants={skillItemVariant}>
+        {data?.skills.split(",").map((skill, idx) => (
+            <motion.div key={skill || idx} className="w-full flex justify-center items-center" variants={skillItemVariant}>
                 <button className="whitespace-nowrap text-ellipsis overflow-hidden py-3 w-[160px] px-6 border-[2px] border-green-main bg-[#fff] text-[#000] font-bold rounded-lg text-xl tracking-widest hover:shadow-green-main transition-all outline-none">{skill}</button>
             </motion.div>
         ))}
