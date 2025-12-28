@@ -1,11 +1,10 @@
-import connectToDb from "@/database";
 import connectToDB from "@/database";
 import Home from "@/models/Home";
 import { NextResponse } from "next/server";
 export const dynamic = "force-dynamic";
 export async function PUT(req){
     try {
-        await connectToDb()
+        await connectToDB()
         const extractData=await req.json()
         const {_id,heading,summary}=extractData
         const updateData=await Home.findByIdAndUpdate(

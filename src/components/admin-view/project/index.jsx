@@ -1,5 +1,4 @@
 "use client"
-import { useState, useEffect } from "react";
 import FormControls from "../form-controls"
 import { handleDeleteItem } from "@/services"
 
@@ -10,31 +9,20 @@ const controls = [
 ]
 
 export default function AdminProjectView({formData,setFormData,handleSaveData,data,setAllData}){
-    const [links, setLinks] = useState(formData?.links || []);
-    // keep formData.links in sync when formData changes
-    useEffect(() => {
-        if (formData && Array.isArray(formData.links)) {
-            setLinks(formData.links);
-        } else {
-            setLinks([]);
-        }
-    }, [formData]);
+    const links = Array.isArray(formData?.links) ? formData.links : [];
 
     function updateLink(index, field, value){
         const updated = [...links];
         updated[index] = {...(updated[index]||{}), [field]: value};
-        setLinks(updated);
-        setFormData({...formData, links: updated});
+        setFormData((prev) => ({...(prev || {}), links: updated}));
     }
     function addLink(){
         const updated = [...links, {label:'', url:''}];
-        setLinks(updated);
-        setFormData({...formData, links: updated});
+        setFormData((prev) => ({...(prev || {}), links: updated}));
     }
     function removeLink(i){
         const updated = links.filter((_,idx) => idx !== i);
-        setLinks(updated);
-        setFormData({...formData, links: updated});
+        setFormData((prev) => ({...(prev || {}), links: updated}));
     }
 
     return <div className="w-full">

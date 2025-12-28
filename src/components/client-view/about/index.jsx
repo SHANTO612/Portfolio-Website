@@ -1,6 +1,5 @@
 'use client'
 
-import { useMemo } from "react";
 import AnimationWrapper from "../animation-wrapper";
 import { motion } from "framer-motion";
 import Image from "next/image";
@@ -25,19 +24,18 @@ const itemFade = {
 };
 
 export default function ClientAboutView({ data }) {
-  const passions = useMemo(() => {
+  const passions = (() => {
     const v = data?.interest_and_passion;
     if (Array.isArray(v)) return v;
     if (typeof v === "string")
       return v.split("\n").map(s => s.trim()).filter(Boolean);
     return [];
-  }, [data?.interest_and_passion]);
+  })();
 
-  const skills = useMemo(() => {
-    return typeof data?.skills === "string"
+  const skills =
+    typeof data?.skills === "string"
       ? data.skills.split(",").map(s => s.trim()).filter(Boolean)
       : [];
-  }, [data?.skills]);
 
   return (
     <section

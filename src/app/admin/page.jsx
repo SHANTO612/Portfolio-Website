@@ -8,7 +8,7 @@ import AdminProjectView from "@/components/admin-view/project";
 import AdminAchievementsView from "@/components/admin-view/achievements";
 import AdminCertificationView from "@/components/admin-view/certification";
 import { addData, getData, updateData, login } from "@/services";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Login from "@/components/admin-view/login";
 
 const initialLoginFormData = {
@@ -75,6 +75,34 @@ export default function AdminView() {
   );
   const [allData, setAllData] = useState({});
   const [update, setUpdate] = useState(false);
+  const extractAllData = useCallback(async () => {
+    const response = await getData(currentSelectedTab);
+    if (
+      currentSelectedTab === "home" &&
+      response &&
+      response.data &&
+      response.data.length
+    ) {
+      setHomeViewFormData(response && response.data[0]);
+      setUpdate(true);
+    }
+    if (
+      currentSelectedTab === "about" &&
+      response &&
+      response.data &&
+      response.data.length
+    ) {
+      setAboutViewFormData(response && response.data[0]);
+      setUpdate(true);
+    }
+    if (response?.success) {
+      setAllData((prev) => ({
+        ...prev,
+        [currentSelectedTab]: response && response.data,
+      }));
+    }
+  }, [currentSelectedTab]);
+
   const menuItem = [
     {
       id: "home",
@@ -215,34 +243,7 @@ export default function AdminView() {
   }
   useEffect(() => {
     extractAllData();
-  }, [currentSelectedTab]);
-  async function extractAllData() {
-    const response = await getData(currentSelectedTab);
-    if (
-      currentSelectedTab === "home" &&
-      response &&
-      response.data &&
-      response.data.length
-    ) {
-      setHomeViewFormData(response && response.data[0]);
-      setUpdate(true);
-    }
-    if (
-      currentSelectedTab === "about" &&
-      response &&
-      response.data &&
-      response.data.length
-    ) {
-      setAboutViewFormData(response && response.data[0]);
-      setUpdate(true);
-    }
-    if (response?.success) {
-      setAllData({
-        ...allData,
-        [currentSelectedTab]: response && response.data,
-      });
-    }
-  }
+  }, [extractAllData]);
   function resetFormData() {
     setHomeViewFormData(initialHomeFormData);
     setAboutViewFormData(initialAboutFormData);

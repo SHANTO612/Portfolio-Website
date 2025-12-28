@@ -1,6 +1,6 @@
 import connectToDB from "@/database"; 
 import { NextResponse } from "next/server";
-import { ObjectId } from "mongodb";
+import mongoose from "mongoose";
 import Education from "@/models/Education";
 export const dynamic = "force-dynamic"
 export async function DELETE(req) {
@@ -8,25 +8,24 @@ export async function DELETE(req) {
         console.log('Delete request received')
         await connectToDB()
         const { id } = await req.json();
-        if (!ObjectId.isValid(id)) {
+        if (!mongoose.isValidObjectId(id)) {
             return NextResponse.json({
                 success: false,
                 message: "Invalid Id provided"
             }) 
         }
-    
-    const result = await Education.deleteOne({ _id: new ObjectId(id)});
-    if (result.deletedCount === 1) {
-        return NextResponse.json({
-            success: true,
-            message: "Education deleted successfully"
-        }) 
-    }else{
-        return NextResponse.json({
-            success: false,
-            message: "Education not found or already deleted"
-        }) 
-    }
+        const deleted = await Education.findByIdAndDelete(id);
+        if (deleted) {
+            return NextResponse.json({
+                success: true,
+                message: "Education deleted successfully"
+            }) 
+        } else {
+            return NextResponse.json({
+                success: false,
+                message: "Education not found or already deleted"
+            }) 
+        }
  
     } catch (e) {
         console.log(e);
