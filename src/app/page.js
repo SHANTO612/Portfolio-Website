@@ -1,31 +1,65 @@
-import Image from "next/image";
 import ClientExperienceAndEducationView from "@/components/client-view/experience";
 import ClientHomeView from "@/components/client-view/home";
 import ClientProjectView from "@/components/client-view/project";
 import ClientAchievementsView from "@/components/client-view/achievements";
 import ClientCertificationView from "@/components/client-view/certification";
-import { headers } from "next/headers";
+import connectToDB from "@/database";
+import Achievement from "@/models/Achievement";
+import Certification from "@/models/Certification";
+import Education from "@/models/Education";
+import Experience from "@/models/Experience";
+import HomeModel from "@/models/Home";
+import Project from "@/models/Project";
 
-async function extractAllDatas(currentSection) {
-  const h = await headers();
-  const host = h.get("x-forwarded-host") ?? h.get("host");
-  const proto = h.get("x-forwarded-proto") ?? "http";
-  const origin = host ? `${proto}://${host}` : "http://localhost:3000";
+export const dynamic = "force-dynamic";
 
-  const res = await fetch(`${origin}/api/${currentSection}/get`,{
-    method: "GET",
-    cache: "no-store"
-  });
-  const data = await res.json();
-  return data && data.data;
+async function getHomePageData() {
+  if (!process.env.MONGODB_URI) {
+    return {
+      homeSectionData: [],
+      experienceSectionData: [],
+      educationSectionData: [],
+      projectSectionData: [],
+      achievementSectionData: [],
+      certificationSectionData: [],
+    };
+  }
+
+  await connectToDB();
+  const [
+    homeSectionData,
+    experienceSectionData,
+    educationSectionData,
+    projectSectionData,
+    achievementSectionData,
+    certificationSectionData,
+  ] = await Promise.all([
+    HomeModel.find({}).sort({ updatedAt: -1, createdAt: -1 }).lean(),
+    Experience.find({}).lean(),
+    Education.find({}).lean(),
+    Project.find({}).lean(),
+    Achievement.find({}).lean(),
+    Certification.find({}).lean(),
+  ]);
+
+  return {
+    homeSectionData,
+    experienceSectionData,
+    educationSectionData,
+    projectSectionData,
+    achievementSectionData,
+    certificationSectionData,
+  };
 }
 export default async function Home() {
-  const homeSectionData = await extractAllDatas("home");
-  const experienceSectionData = await extractAllDatas("experience");
-  const educationSectionData = await extractAllDatas("education");
-  const projectSectionData = await extractAllDatas("project");
-  const achievementSectionData = await extractAllDatas("achievement");
-  const certificationSectionData = await extractAllDatas("certification");
+  const {
+    homeSectionData,
+    experienceSectionData,
+    educationSectionData,
+    projectSectionData,
+    achievementSectionData,
+    certificationSectionData,
+  } = await getHomePageData();
   return (
    <div>
     <ClientHomeView data={homeSectionData} />

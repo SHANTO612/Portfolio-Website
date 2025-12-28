@@ -1,11 +1,11 @@
 import mongoose from "mongoose";
 export default async function connectToDb() {
-  try {
-    await mongoose.connect(
-      "mongodb+srv://alfahadshanto:shanto612@cluster0.achyd.mongodb.net/"
-    );
-    console.log("Database is connected successfully");
-  } catch (error) {
-    console.log(error);
+  const uri = process.env.MONGODB_URI;
+  if (!uri) {
+    throw new Error("Missing MONGODB_URI environment variable");
   }
+
+  if (mongoose.connection.readyState === 1) return;
+
+  await mongoose.connect(uri);
 }

@@ -1,18 +1,13 @@
 import ClientAboutView from "@/components/client-view/about";
-import { headers } from "next/headers";
+import connectToDB from "@/database";
+import About from "@/models/About";
+
+export const dynamic = "force-dynamic";
 
 async function extractAboutData() {
-  const h = await headers();
-  const host = h.get("x-forwarded-host") ?? h.get("host");
-  const proto = h.get("x-forwarded-proto") ?? "http";
-  const origin = host ? `${proto}://${host}` : "http://localhost:3000";
-
-  const res = await fetch(`${origin}/api/about/get`, {
-    method: "GET",
-    cache: "no-store",
-  });
-  const data = await res.json();
-  return data?.data;
+  if (!process.env.MONGODB_URI) return [];
+  await connectToDB();
+  return About.find({}).sort({ updatedAt: -1, createdAt: -1 }).limit(1).lean();
 }
 
 export default async function AboutPage() {
