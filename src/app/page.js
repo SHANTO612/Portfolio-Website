@@ -4,9 +4,15 @@ import ClientHomeView from "@/components/client-view/home";
 import ClientProjectView from "@/components/client-view/project";
 import ClientAchievementsView from "@/components/client-view/achievements";
 import ClientCertificationView from "@/components/client-view/certification";
+import { headers } from "next/headers";
 
 async function extractAllDatas(currentSection) {
-  const res = await fetch(`http://localhost:3000/api/${currentSection}/get`,{
+  const h = headers();
+  const host = h.get("x-forwarded-host") ?? h.get("host");
+  const proto = h.get("x-forwarded-proto") ?? "http";
+  const origin = host ? `${proto}://${host}` : "http://localhost:3000";
+
+  const res = await fetch(`${origin}/api/${currentSection}/get`,{
     method: "GET",
     cache: "no-store"
   });

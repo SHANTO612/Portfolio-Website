@@ -1,7 +1,13 @@
 import ClientAboutView from "@/components/client-view/about";
+import { headers } from "next/headers";
 
 async function extractAboutData() {
-  const res = await fetch(`http://localhost:3000/api/about/get`, {
+  const h = headers();
+  const host = h.get("x-forwarded-host") ?? h.get("host");
+  const proto = h.get("x-forwarded-proto") ?? "http";
+  const origin = host ? `${proto}://${host}` : "http://localhost:3000";
+
+  const res = await fetch(`${origin}/api/about/get`, {
     method: "GET",
     cache: "no-store",
   });
@@ -17,4 +23,3 @@ export default async function AboutPage() {
     </div>
   );
 }
-
