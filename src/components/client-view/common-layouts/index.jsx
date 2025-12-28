@@ -2,7 +2,7 @@
 import Link from "next/link";
 import {  usePathname } from "next/navigation"
 import { FaFacebookF, FaGithub, FaLinkedinIn } from "react-icons/fa";
-import Navbar from "../navbar";
+import Navbar from "../Navbar";
 export default function CommonLayout({children}) {
     const pathName = usePathname();
     return (
