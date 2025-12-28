@@ -1,6 +1,6 @@
 'use client'
 import FormControls from "../form-controls"
-import { handleDelete } from "@/services"
+import { handleDeleteItem } from "@/services"
 const controls = [
     {
         name: 'degree',
@@ -10,33 +10,38 @@ const controls = [
     },
     {
         name: 'year',
-        placeholder: 'Year',
+        placeholder: 'Year (or range)',
         type: 'text',
         label: 'Year'
     },
     {
         name: 'college',
-        placeholder: 'College Name',
+        placeholder: 'College / University Name',
         type: 'text',
         label: 'College Name'
-    } 
+    },
+    {
+        name: 'cgpa',
+        placeholder: 'CGPA (e.g. 3.97)',
+        type: 'text',
+        label: 'CGPA'
+    }
 ] 
 export default function AdminEducationView({formData,setFormData,handleSaveData,data,setAllData}){
 
-    const handleDeleteItem = async (id) => {
-        
-    const response = await handleDelete(id);
-    if (response.success) {
-        const updatedData = data.filter((item) => item._id !== id);
-        setAllData((prevData) => ({
-            ...prevData,
-            education: updatedData
-        }));
-        console.log("Item deleted Successfully");
-    }else {
-        console.error("Failed to delete item", response.message)
-    }
-};
+    const handleDeleteItemLocal = async (id) => {
+        const response = await handleDeleteItem('education', id);
+        if (response.success) {
+            const updatedData = data.filter((item) => item._id !== id);
+            setAllData((prevData) => ({
+                ...prevData,
+                education: updatedData,
+            }));
+            console.log('Item deleted Successfully');
+        } else {
+            console.error('Failed to delete item', response.message);
+        }
+    };
     console.log(formData);
     return <div className="w-full">
     <div className="bg-[#d7d7d7] shadow-md rounded px-8 pt-6 pb-8 mb-4">
@@ -48,15 +53,16 @@ export default function AdminEducationView({formData,setFormData,handleSaveData,
  <p className="text-lg font-semibold text-gray-700">Degree: {item.degree}</p>
  <p className="text-lg text-gray-700">Year: {item.year}</p>
  <p className="text-lg   text-gray-700">College: {item.college}</p>
+ {item.cgpa ? <p className="text-lg text-gray-700">CGPA: {item.cgpa}</p> : null}
   <div className="flex gap-2">
-     <button onClick={() => handleDeleteItem(item._id)} className="bg-red-500 text-white-500 p-2 rounded">
-            Delete
-     </button>
+      <button onClick={() => handleDeleteItemLocal(item._id)} className="bg-red-500 text-white-500 p-2 rounded">
+                Delete
+      </button>
   </div>
               </div>
             ))
         ) : 
-        <p className="text-center text-gray-600"> No Job Experience data Available</p>
+        <p className="text-center text-gray-600">No Education data available</p>
     }
     </div>
 

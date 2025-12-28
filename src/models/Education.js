@@ -4,6 +4,7 @@ const EducationSchema = new mongoose.Schema(
         degree: String,
         year: String,
         college: String, 
+        cgpa: String,
     },
     { timestamps: true }
 );

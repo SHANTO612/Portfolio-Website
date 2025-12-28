@@ -1,11 +1,11 @@
 import mongoose from "mongoose";
 const ExperienceSchema = new mongoose.Schema(
     {
-        position: String,
-        company: String,
-        duration: String,
-        location: String,
-        job_profile: String, 
+        title: String,
+        year: String,
+        affiliation: String,
+        summary: String,
+        details: [String],
     },
     { timestamps: true }
 );

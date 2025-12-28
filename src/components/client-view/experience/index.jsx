@@ -15,7 +15,7 @@ export default function ClientExperienceAndEducationView({educationData,experien
         <AnimationWrapper className={"py-6 sm:py-16"}>
             <div className="flex flex-col justify-center items-center row-start-2 sm:row-start-1">
         <h1 className="leading-[70px] mb-4 text-3xl lg:text-4xl xl:text-5xl font-bold">
-            {"My Experience".split(" ").map((item,index) => (
+            {"Research and ongoing papers".split(" ").map((item,index) => (
                     <span key={index} className={`${index === 1 ? "text-green-main" : "text-[#000]"}`}> {item}{" "} </span>
                 ))}
         </h1>
@@ -29,26 +29,23 @@ export default function ClientExperienceAndEducationView({educationData,experien
     <motion.div className="container">
         <Timeline position="right">
         {experienceData && experienceData.length ? 
-        experienceData.map((experienceItem, index) => (
-            <TimelineItem key={experienceItem._id || index}>
+        experienceData.map((item, index) => (
+            <TimelineItem key={item._id || index}>
                 <TimelineSeparator>
                     <TimelineDot className="bg-green-main" />
                     <TimelineConnector  className="bg-green-main" />  
-                    
                 </TimelineSeparator>
                 <TimelineContent>
                     <div className="border-[2px] p-4 rounded-[8px] border-green-main mt-[14px] ml-[16px]">
-                <p className="font-bold">{ experienceItem.duration }</p>
-                <p className="font-extrabold mt-2">
-                    { experienceItem.company },{" "}
-                    { experienceItem.location}
-                    </p>
-                    <p className="font-extrabold mt-2">
-                    { experienceItem.position } 
-                    </p>
-                    <p className="font-bold mt-2">
-                    { experienceItem.job_profile } 
-                    </p>
+                        <p className="font-bold text-lg">{item.title}</p>
+                        <p className="text-sm text-gray-600 mt-1">{item.year} — {item.affiliation}</p>
+                        {item.details && (Array.isArray(item.details) ? item.details : String(item.details).split('\n')).length ? (
+                            <ul className="list-disc pl-6 text-gray-700 mt-3">
+                                {(Array.isArray(item.details) ? item.details : String(item.details).split('\n')).map((d, i) => (
+                                    d ? <li key={i}>{d}</li> : null
+                                ))}
+                            </ul>
+                        ) : null}
                     </div>
                 </TimelineContent>
             </TimelineItem>
@@ -96,6 +93,11 @@ export default function ClientExperienceAndEducationView({educationData,experien
                     <p className="font-bold mt-2">
                     Degree: { educationItem.degree } 
                     </p>
+                    {educationItem.cgpa ? (
+                      <p className="font-bold mt-2">
+                        CGPA: {educationItem.cgpa}
+                      </p>
+                    ) : null}
                     </div>
                 </TimelineContent>
             </TimelineItem>
@@ -105,10 +107,6 @@ export default function ClientExperienceAndEducationView({educationData,experien
     </div> 
     </AnimationWrapper> 
             </div>         
-
-
-
-
 
         </div> 
     </div>

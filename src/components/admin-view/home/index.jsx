@@ -23,9 +23,20 @@ export default function AdminHomeView({formData,setFormData,handleSaveData}){
          formData={formData}
          setFormData={setFormData}
         /> 
-        <button onClick={() => handleSaveData('home')} className="mt-[5px] border border-blue-600 bg-blue-600 text-white p-3 font-bold text-[16px] focus:bg-green-800 rounded-md">
-        Save Changes
-        </button>
+                <div className="flex gap-2">
+                <button onClick={() => handleSaveData('home')} className="mt-[5px] border border-blue-600 bg-blue-600 text-white p-3 font-bold text-[16px] focus:bg-green-800 rounded-md">
+                Save Changes
+                </button>
+                <button onClick={async ()=>{
+                    if(formData && formData._id){
+                        const { handleDeleteItem } = await import('@/services');
+                        const res = await handleDeleteItem('home', formData._id);
+                        if(res.success){
+                            setFormData({ heading: '', summary: '' })
+                        }
+                    }
+                }} className="mt-[5px] border border-red-600 bg-red-600 text-white p-3 font-bold text-[16px] rounded-md">Delete</button>
+                </div>
             </div>
          </div>
 }

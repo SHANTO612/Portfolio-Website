@@ -57,19 +57,18 @@ export async function login(formData){
     } 
 }
 
-export async function handleDelete(id) {
+export async function handleDeleteItem(currentTab, id) {
     try {
-        const res = await fetch(`/api/education/delete`,{
+        const res = await fetch(`/api/${currentTab}/delete`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({id})
+            body: JSON.stringify({ id }),
         });
         return res.json();
-        
     } catch (e) {
-        console.error("Error Deleting items",e);
-        return { success: false, message: "Failed to delete item"};
+        console.error("Error Deleting items", e);
+        return { success: false, message: "Failed to delete item" };
     }
 }

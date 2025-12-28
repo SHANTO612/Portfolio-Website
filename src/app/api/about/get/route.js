@@ -5,7 +5,9 @@ export const dynamic = "force-dynamic"
 export async function GET(req) {
     try {
         await connectToDB();
-        const extractData = await About.find({}); 
+        const extractData = await About.find({})
+          .sort({ updatedAt: -1, createdAt: -1 })
+          .limit(1);
         if (extractData) {
             return NextResponse.json({
                 success: true,
@@ -23,6 +25,6 @@ export async function GET(req) {
         return NextResponse.json({
             success: false,
             message: "Something goes wrong Please try again"
-        });
+        }, { status: 500 });
     }
 }

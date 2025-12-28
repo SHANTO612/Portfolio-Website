@@ -14,17 +14,20 @@
     "@fullhuman/postcss-purgecss": "^7.0.2",
     "@mui/lab": "^6.0.0-beta.25",
     "@mui/material": "^6.4.2",
+    "aws4": "^1.13.2",
     "bcryptjs": "^2.4.3",
     "framer-motion": "^12.0.6",
     "mongoose": "^8.9.6",
     "next": "15.1.6",
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "react-icons": "^5.4.0",
     "react-scroll": "^1.9.2",
     "react-slick": "^0.30.3"
   },
   "devDependencies": {
+    "eslint": "^8.57.1",
+    "eslint-config-next": "15.1.6",
     "postcss": "^8",
     "tailwindcss": "^3.4.1"
   }

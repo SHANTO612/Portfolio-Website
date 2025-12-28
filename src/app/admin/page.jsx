@@ -5,6 +5,8 @@ import AdminEducationView from "@/components/admin-view/education";
 import AdminExperienceView from "@/components/admin-view/experience";
 import AdminHomeView from "@/components/admin-view/home";
 import AdminProjectView from "@/components/admin-view/project";
+import AdminAchievementsView from "@/components/admin-view/achievements";
+import AdminCertificationView from "@/components/admin-view/certification";
 import { addData, getData, updateData, login } from "@/services";
 import { useEffect, useState } from "react";
 import Login from "@/components/admin-view/login";
@@ -19,29 +21,38 @@ const initialHomeFormData = {
 };
 
 const initialAboutFormData = {
-  about_me: "",
-  no_of_projects: "",
-  year_of_experience: "",
-  no_of_clients: "",
+  interest_and_passion: [],
   skills: "",
 };
 const initialExperienceFormData = {
-  position: "",
-  company: "",
-  duration: "",
-  location: "",
-  job_profile: "",
+  title: "",
+  year: "",
+  affiliation: "",
+  details: "",
 };
 const initialEducationFormData = {
   degree: "",
   year: "",
   college: "",
+  cgpa: "",
 };
 const initialProjectFormData = {
   name: "",
+  featured: "",
   website: "",
   technologies: "",
   github: "",
+  links: [],
+};
+const initialAchievementFormData = {
+  title: "",
+  description: "",
+  year: "",
+};
+const initialCertificationFormData = {
+  title: "",
+  issuer: "",
+  year: "",
 };
 export default function AdminView() {
   const [currentSelectedTab, setCurrentSelectedTab] = useState("home");
@@ -57,6 +68,8 @@ export default function AdminView() {
   const [projectViewFormData, setProjectViewFormData] = useState(
     initialProjectFormData
   );
+  const [achievementViewFormData, setAchievementViewFormData] = useState(initialAchievementFormData);
+  const [certificationViewFormData, setCertificationViewFormData] = useState(initialCertificationFormData);
   const [educationViewFormData, setEducationViewFormData] = useState(
     initialEducationFormData
   );
@@ -71,6 +84,7 @@ export default function AdminView() {
           formData={homeViewFormData}
           setFormData={setHomeViewFormData}
           handleSaveData={handleSaveData}
+          setAllData={setAllData}
         />
       ),
     },
@@ -82,18 +96,20 @@ export default function AdminView() {
           formData={aboutViewFormData}
           setFormData={setAboutViewFormData}
           handleSaveData={handleSaveData}
+          setAllData={setAllData}
         />
       ),
     },
     {
       id: "experience",
-      lable: "Experience",
+      lable: "Research and ongoing papers",
       component: (
         <AdminExperienceView
           formData={experienceViewFormData}
           setFormData={setExperienceViewFormData}
           handleSaveData={handleSaveData}
           data={allData?.experience}
+          setAllData={setAllData}
         />
       ),
     },
@@ -119,15 +135,42 @@ export default function AdminView() {
           setFormData={setProjectViewFormData}
           handleSaveData={handleSaveData}
           data={allData?.project}
+          setAllData={setAllData}
+        />
+      ),
+    },
+    {
+      id: "achievement",
+      lable: "Achievements",
+      component: (
+        <AdminAchievementsView
+          formData={achievementViewFormData}
+          setFormData={setAchievementViewFormData}
+          handleSaveData={handleSaveData}
+          data={allData?.achievement}
+          setAllData={setAllData}
+        />
+      ),
+    },
+    {
+      id: "certification",
+      lable: "Certification",
+      component: (
+        <AdminCertificationView
+          formData={certificationViewFormData}
+          setFormData={setCertificationViewFormData}
+          handleSaveData={handleSaveData}
+          data={allData?.certification}
+          setAllData={setAllData}
         />
       ),
     },
     {
       id: "contact",
       lable: "Contact",
-      component: <AdminContactView
-            data={allData && allData?.contact}
-            />
+      component: (
+        <AdminContactView data={allData && allData?.contact} setAllData={setAllData} />
+      ),
     },
   ];
 
@@ -138,12 +181,34 @@ export default function AdminView() {
       experience: experienceViewFormData,
       education: educationViewFormData,
       project: projectViewFormData,
+      achievement: achievementViewFormData,
+      certification: certificationViewFormData,
     };
-    const response = update
-      ? await updateData(currentSelectedTab, dataMap[currentSelectedTab])
-      : await addData(currentSelectedTab, dataMap[currentSelectedTab]);
+    const payload = dataMap[currentSelectedTab];
+    // Normalize `details` for research projects: accept textarea string and convert to array
+    const normalizedPayload = { ...payload };
+    if (currentSelectedTab === 'experience' && normalizedPayload) {
+      const d = normalizedPayload.details;
+      if (typeof d === 'string') {
+        normalizedPayload.details = d
+          .split('\n')
+          .map((s) => s.trim())
+          .filter(Boolean);
+      }
+    }
+    let response;
+    try {
+      if (normalizedPayload && normalizedPayload._id) {
+        response = await updateData(currentSelectedTab, normalizedPayload);
+      } else {
+        response = await addData(currentSelectedTab, normalizedPayload);
+      }
+    } catch (err) {
+      console.error('save error', err);
+      response = null;
+    }
     console.log(response, "response");
-    if (response.success) {
+    if (response && response.success) {
       resetFormData();
       extractAllData();
     }
@@ -235,9 +300,10 @@ export default function AdminView() {
         </button>
       </nav>
       <div className="mt-10 p-10">
-        {menuItem.map(
-          (item) => item.id === currentSelectedTab && item.component
-        )}
+        {(() => {
+          const activeComponent = menuItem.find((item) => item.id === currentSelectedTab)?.component;
+          return activeComponent || null;
+        })()}
       </div>
     </div>
   );
