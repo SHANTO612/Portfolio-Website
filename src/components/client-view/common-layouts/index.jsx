@@ -3,7 +3,9 @@ import Link from "next/link";
 import {  usePathname } from "next/navigation"
 import { FaFacebookF, FaGithub, FaLinkedinIn } from "react-icons/fa";
 import Navbar from "../Navbar";
-export default function CommonLayout({children}) {
+import TerminalWrapper from "../terminal-wrapper";
+
+export default function CommonLayout({children, data}) {
     const pathName = usePathname();
     return (
         <div className="min-h-screen flex flex-col">
@@ -11,6 +13,9 @@ export default function CommonLayout({children}) {
             <div className="flex-1">
                 {children}
             </div>
+            {/* Terminal Widget */}
+            {pathName !== "/admin" && <TerminalWrapper data={data} />}
+            
             {pathName !== "/admin" ? (
                 <footer className="border-t border-gray-200 bg-white">
                     <div className="max-w-screen-xl mx-auto px-6 sm:px-8 lg:px-16 py-10 grid grid-cols-1 md:grid-cols-3 gap-8">

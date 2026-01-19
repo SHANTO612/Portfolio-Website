@@ -4,10 +4,15 @@ import About from "@/models/About";
 
 export const dynamic = "force-dynamic";
 
+function toPlain(value) {
+  return JSON.parse(JSON.stringify(value));
+}
+
 async function extractAboutData() {
   if (!process.env.MONGODB_URI) return [];
   await connectToDB();
-  return About.find({}).sort({ updatedAt: -1, createdAt: -1 }).limit(1).lean();
+  const result = await About.find({}).sort({ updatedAt: -1, createdAt: -1 }).limit(1).lean();
+  return toPlain(result);
 }
 
 export default async function AboutPage() {

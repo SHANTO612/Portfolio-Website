@@ -13,6 +13,10 @@ import Project from "@/models/Project";
 
 export const dynamic = "force-dynamic";
 
+function toPlain(value) {
+  return JSON.parse(JSON.stringify(value));
+}
+
 async function getHomePageData() {
   if (!process.env.MONGODB_URI) {
     return {
@@ -42,14 +46,14 @@ async function getHomePageData() {
     Certification.find({}).lean(),
   ]);
 
-  return {
+  return toPlain({
     homeSectionData,
     experienceSectionData,
     educationSectionData,
     projectSectionData,
     achievementSectionData,
     certificationSectionData,
-  };
+  });
 }
 export default async function Home() {
   const {
