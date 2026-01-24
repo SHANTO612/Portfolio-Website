@@ -1,36 +1,110 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Portfolio Website
 
-## Getting Started
+A dynamic, fully responsive personal portfolio website built with Next.js 16, Tailwind CSS, and MongoDB. This project features a modern UI with an interactive terminal, an admin panel for content management, and smooth animations using Framer Motion.
 
-First, run the development server:
+## 🚀 Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+-   **Dynamic Content**: All data (About, Projects, Experience, Education, etc.) is fetched dynamically from MongoDB.
+-   **Admin Dashboard**: Secure admin panel to Add, Update, and Delete portfolio content.
+-   **Interactive Terminal**: A unique, floating terminal component that allows users to explore the portfolio using command-line style inputs (accessible globally).
+-   **Responsive Design**: Fully optimized for mobile, tablet, and desktop devices using Tailwind CSS.
+-   **Animations**: Smooth page transitions and element animations powered by Framer Motion.
+-   **Server Components**: Utilizes Next.js 16 Server Components for improved performance and SEO.
+-   **Direct Database Access**: Optimized data fetching with direct Mongoose queries in Server Components to avoid Vercel deployment issues (API route loopbacks).
+
+## 🛠 Tech Stack
+
+-   **Frontend**: Next.js 16 (App Router), React 18, Tailwind CSS, Material UI, Framer Motion
+-   **Backend**: Next.js API Routes (Serverless functions)
+-   **Database**: MongoDB (via Mongoose ODM)
+-   **Authentication**: Custom implementation (using bcryptjs)
+-   **Deployment**: Vercel
+
+## 📂 Project Structure
+
+```
+├── src/
+│   ├── app/                 # Next.js App Router pages and API routes
+│   │   ├── admin/           # Admin dashboard pages
+│   │   ├── api/             # Backend API endpoints (CRUD operations)
+│   │   ├── layout.js        # Root layout (includes Global Terminal)
+│   │   └── page.js          # Home page
+│   ├── components/          # Reusable React components
+│   │   ├── admin-view/      # Components for the Admin interface
+│   │   ├── client-view/     # Components for the Public interface
+│   │   │   ├── terminal/    # Interactive Terminal component
+│   │   │   └── ...
+│   ├── database/            # Database connection logic
+│   ├── models/              # Mongoose data models
+│   └── services/            # Service functions
+├── public/                  # Static assets (images, icons)
+├── .env                     # Environment variables
+└── package.json             # Dependencies and scripts
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## ⚙️ Getting Started
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+### Prerequisites
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+-   Node.js (v18 or higher)
+-   MongoDB Atlas account (or local MongoDB instance)
 
-## Learn More
+### Installation
 
-To learn more about Next.js, take a look at the following resources:
+1.  Clone the repository:
+    ```bash
+    git clone https://github.com/SHANTO612/Portfolio-Website.git
+    cd Portfolio-Website
+    ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+2.  Install dependencies:
+    ```bash
+    npm install
+    # or
+    yarn install
+    # or
+    pnpm install
+    ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+3.  Set up Environment Variables:
+    Create a `.env` file in the root directory and add your MongoDB connection string:
+    ```env
+    MONGODB_URI=your_mongodb_connection_string
+    ```
 
-## Deploy on Vercel
+4.  Run the development server:
+    ```bash
+    npm run dev
+    ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+    Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🖥️ Terminal Commands
+
+The website features a global floating terminal button. Click it to open the terminal and try these commands:
+
+-   `help`: List all available commands
+-   `about`: Display information about me
+-   `skills`: List technical skills
+-   `projects`: List projects (fetched from DB)
+-   `achievements`: List achievements
+-   `certifications`: List certifications
+-   `contact`: Show contact details
+-   `clear`: Clear the terminal screen
+
+## 📦 Deployment
+
+This project is optimized for deployment on [Vercel](https://vercel.com).
+
+1.  Push your code to a GitHub repository.
+2.  Import the project into Vercel.
+3.  Add the `MONGODB_URI` environment variable in the Vercel project settings.
+4.  Deploy!
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## 📄 License
+
+This project is licensed under the MIT License.
